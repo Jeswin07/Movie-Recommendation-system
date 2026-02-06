@@ -4,12 +4,12 @@ from sklearn.metrics.pairwise import cosine_similarity
 from sklearn.feature_extraction.text import TfidfVectorizer
 
 import streamlit as st
+TMDB_API_KEY = st.secrets["TMDB_API_KEY"]
 
 import os
-from dotenv import load_dotenv
 
-load_dotenv()
-TMDB_API_KEY = os.getenv("TMDB_API_KEY")
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+
 
 import requests
 
@@ -39,14 +39,14 @@ def fetch_poster(movie_title):
 
 # Load ratings
 ratings = pd.read_csv(
-    r"C:\Users\anasb\OneDrive\Desktop\Data Science Btype\Week29PredNLP\Recommendation-project\ml-100k\u.data",
+    os.path.join(BASE_DIR, "u.data"),
     sep="\t",
     names=["userId", "movieId", "rating", "timestamp"]
 )
 
 # Load movie titles
 movies = pd.read_csv(
-    r"C:\Users\anasb\OneDrive\Desktop\Data Science Btype\Week29PredNLP\Recommendation-project\ml-100k\u.item",
+    os.path.join(BASE_DIR, "u.item"),
     sep="|",
     encoding="latin-1",
     header=None,
@@ -364,4 +364,5 @@ if final_movie:
 
                 st.markdown(f"**{movie}**")
                 st.caption(f"⭐ Similarity score: {round(score, 2)}")
+
 
